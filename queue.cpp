@@ -1,3 +1,7 @@
+// trying to implement a queue as a refresher
+// this will evolve (and hopefully improve) with time
+// Date: March 4th, 2019
+
 #include <stdio.h>
 #include <stdlib.h>
  
