@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
  
  class Queue
  {
@@ -6,23 +7,38 @@
  		// members
  		int* elements;
 
+ 		int size, front, rear, capacity;
+
  		// functions
  		bool enqueue(int e);
  		bool dequeue();
 
  		// constructor
- 		Queue()
+ 		Queue(int size)
  		{
- 			elements = NULL; // todo: change to nullptr?
+ 			size = this->size;
+ 			front = 0;
+ 			rear = 0;
+ 			elements = (int*) malloc(sizeof(int) * size); // todo: change to nullptr?
  		}
 
  	private:
+ 		bool isFull();
  };
 
  bool Queue::enqueue(int e)
  {
- 	// stub 
- 	return true;
+ 	if(!isFull())
+ 	{
+ 		this->rear = rear+1 % capacity;
+ 		this->elements[rear] = e;
+ 		this->size = size+1; 		
+ 		return true;
+ 	}
+ 	else
+ 	{
+ 		return false;
+ 	}
  }
 
  bool Queue::dequeue()
@@ -31,9 +47,21 @@
  	return true;
  }
 
+ bool Queue::isFull()
+ {
+ 	if(size == capacity)
+ 	{
+ 		return true;
+ 	}
+ 	else
+ 	{
+ 		return false;
+ 	}
+ }
+
 int main() {
     printf("Beginning test...\n");
-    Queue testQueue;
+    Queue testQueue(5);
     if(!testQueue.enqueue(0) || !testQueue.dequeue())
     {
     	printf("Test failed!\n");
