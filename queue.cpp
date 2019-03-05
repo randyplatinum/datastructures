@@ -16,11 +16,13 @@
  		// functions
  		bool enqueue(int e);
  		bool dequeue();
+ 		bool printQueue();
 
  		// constructor
- 		Queue(int size)
+ 		Queue(int capacity)
  		{
- 			size = this->size;
+ 			this->capacity = capacity;
+ 			size = 0;
  			front = 0;
  			rear = 0;
  			elements = (int*) malloc(sizeof(int) * size); // todo: change to nullptr?
@@ -34,21 +36,30 @@
  {
  	if(!isFull())
  	{
- 		this->rear = rear+1 % capacity;
  		this->elements[rear] = e;
+ 		this->rear = rear+1 % capacity;
  		this->size = size+1; 		
  		return true;
  	}
  	else
  	{
+ 		printf("Queue is at capacity! Cannot enqueue element. \n"); // todo: implement dynamic growth
  		return false;
  	}
  }
 
  bool Queue::dequeue()
  {
- 	// stub 
- 	return true;
+ 	if(this->size == 0)
+ 	{
+ 		return false;
+ 	}
+ 	else
+ 	{
+ 		this->front = front+1 % capacity;
+ 		this->size = size-1;
+		return true;
+ 	} 	
  }
 
  bool Queue::isFull()
@@ -63,17 +74,59 @@
  	}
  }
 
-int main() {
+ bool Queue::printQueue()
+ {
+ 	for (int i = 0; i < this->size; i= i + 1 % this->capacity)
+ 	{
+ 		printf("Index: %d, Element: %d\n", i + this->front, this->elements[i + this->front]);
+ 	}
+ 	return true;
+ }
+
+int main() 
+{
     printf("Beginning test...\n");
-    Queue testQueue(5);
-    if(!testQueue.enqueue(0) || !testQueue.dequeue())
-    {
-    	printf("Test failed!\n");
-    	return 1;
-    }
-    else
-    {
-    	printf("Test succeeded!\n");
-    	return 0;
-    }
+	Queue testQueue(5);
+
+	printf("Enqueue element '100'...\n");
+	testQueue.enqueue(100);
+	testQueue.printQueue();
+
+	printf("Enqueue element '200'...\n");
+	testQueue.enqueue(200);
+	testQueue.printQueue();
+
+	printf("Enqueue element '300'...\n");
+	testQueue.enqueue(300);
+	testQueue.printQueue();
+
+	printf("Enqueue element '400'...\n");
+	testQueue.enqueue(400);
+	testQueue.printQueue();
+
+	printf("Dequeue element...\n");
+	testQueue.dequeue();
+	testQueue.printQueue();
+
+	printf("Dequeue element...\n");
+	testQueue.dequeue();
+	testQueue.printQueue();
+
+	printf("Enqueue element '101'...\n");
+	testQueue.enqueue(101);
+	testQueue.printQueue();
+
+	printf("Enqueue element '201'...\n");
+	testQueue.enqueue(201);
+	testQueue.printQueue();
+
+	printf("Enqueue element '301'...\n");
+	testQueue.enqueue(301);
+	testQueue.printQueue();
+
+	printf("Enqueue element '401'...\n");
+	testQueue.enqueue(401);
+	testQueue.printQueue();
+
+	return 0;
 };
