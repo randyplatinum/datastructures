@@ -2,31 +2,32 @@
 # April 13, 2019
 # ======================================
 
+from datetime import datetime
+
+unsortedList = [3, 1, 77, 10, 0, 31, 82, 97, 9, 17, 94, 65, 12, 19, 6, 2, 29, 90, 70, 66, 13, 15, 54, 29, 19, 22, 56, 45, 
+				18, 9, 91, 51, 62, 71, 21, 25, 55, 31, 29, 82, 81, 74, 19, 18, 34, 101, 77, 33, 11, 6, 52, 94, 64, 27] 
+				
 #
 # @brief bottom up mergesort implementation
-# @param list -- the list of elements to be sorted
+# @param inputList -- the list of elements to be sorted
 # @return a new list with all elements in sorted order
 #
-def mergesort( list ):
-	rightList = []
-	leftList = []
+def mergesort( inputList ):
 
 	# base case
-	if len(list) == 1:
-		return list;
+	if len(inputList) == 1:
+		return inputList;
 
 	# divide into two lists
-	for e in list:
-		if list.index(e) < len(list)/2:
-			leftList.append(e)
-		else:
-			rightList.append(e)
+	middle = len(inputList)/2
+	right = inputList[middle:]
+	left = inputList[:middle]
 	
 	# recurse
-	leftList = mergesort(leftList)
-	rightList = mergesort(rightList)
+	left = mergesort(left)
+	right = mergesort(right)
 	
-	return merge(leftList, rightList)	
+	return merge(left, right)	
 
 #
 # @brief helper function that merges two sublists in sorted order
@@ -49,16 +50,15 @@ def merge(leftList, rightList):
 	while(len(rightList)):
 		sortedList.append(rightList.pop(0))
 
-	return sortedList
+	return sortedList	
 
-unsortedIntList = [3, 15, 2, 21, 25, 14, 1, 19, 43, 10]
-sortedIntList = mergesort(unsortedIntList)
 
-unsortedCharList = ["c", "z", "a", "x", "e", "b", "r", "l"]
-sortedCharList = mergesort(unsortedCharList)
+if __name__ == '__main__': 
+	timeStart = datetime.now()
+	sortedList = mergesort(unsortedList)
+	timeFinish = datetime.now()
+	delta = timeFinish - timeStart
 
-print "Unsorted Integer List: " + str(unsortedIntList)
-print "Sorted Integer List: " + str(sortedIntList)
-
-print "Unsorted Char List: " + str(unsortedCharList)
-print "Sorted Char List: " + str(sortedCharList)
+	print "Unsorted List: " + str(unsortedList)
+	print "Sorted List:   " + str(sortedList)
+	print "Total time to sort in ms: " + str(delta.total_seconds() * 1000)
